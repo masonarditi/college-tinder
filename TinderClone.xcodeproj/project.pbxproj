@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CED394302D7043C400452B3C /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = CED3942F2D7043C400452B3C /* Inject */; };
+		CED394322D70497B00452B3C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED394312D70497900452B3C /* UserProfile.swift */; };
+		CED394342D7049A000452B3C /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED394332D70499E00452B3C /* EditProfileView.swift */; };
+		CED394362D7049ED00452B3C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED394352D7049EC00452B3C /* ImagePicker.swift */; };
 		F14E055224F446F200796331 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E055124F446F200796331 /* LoadingView.swift */; };
 		F1B52FAD24EFBDA0003A6AAC /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B52FAC24EFBDA0003A6AAC /* CardView.swift */; };
 		F1C64EBA24EEBCD30055C705 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C64EB924EEBCD30055C705 /* Color.swift */; };
@@ -23,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CED394312D70497900452B3C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		CED394332D70499E00452B3C /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
+		CED394352D7049EC00452B3C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		F14E055124F446F200796331 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F1B52FAC24EFBDA0003A6AAC /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		F1C64EB924EEBCD30055C705 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -40,11 +47,16 @@
 		F1DE331424EE7003008F6DF7 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CE077F472D7169C500CFA69F /* Services */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Services; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		F1DE32F924EE6F64008F6DF7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CED394302D7043C400452B3C /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +75,7 @@
 		F1D5515A24F6D01D009F7C90 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CED394312D70497900452B3C /* UserProfile.swift */,
 				F1D5515B24F6D029009F7C90 /* Card.swift */,
 			);
 			path = Model;
@@ -94,6 +107,7 @@
 				F1DE330324EE6F65008F6DF7 /* Assets.xcassets */,
 				F1DE330824EE6F65008F6DF7 /* Info.plist */,
 				F1DE330524EE6F65008F6DF7 /* Preview Content */,
+				CE077F472D7169C500CFA69F /* Services */,
 			);
 			path = TinderClone;
 			sourceTree = "<group>";
@@ -109,6 +123,8 @@
 		F1DE331624EE7009008F6DF7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CED394352D7049EC00452B3C /* ImagePicker.swift */,
+				CED394332D70499E00452B3C /* EditProfileView.swift */,
 				F1DE330124EE6F64008F6DF7 /* ContentView.swift */,
 				F14E055124F446F200796331 /* LoadingView.swift */,
 				F1DE330E24EE6FC9008F6DF7 /* HomeView.swift */,
@@ -163,6 +179,9 @@
 				Base,
 			);
 			mainGroup = F1DE32F324EE6F64008F6DF7;
+			packageReferences = (
+				CED3942E2D7043C400452B3C /* XCRemoteSwiftPackageReference "Inject" */,
+			);
 			productRefGroup = F1DE32FD24EE6F64008F6DF7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -192,13 +211,16 @@
 				F1DE331324EE6FFB008F6DF7 /* MessagesView.swift in Sources */,
 				F1B52FAD24EFBDA0003A6AAC /* CardView.swift in Sources */,
 				F1DE330F24EE6FC9008F6DF7 /* HomeView.swift in Sources */,
+				CED394362D7049ED00452B3C /* ImagePicker.swift in Sources */,
 				F14E055224F446F200796331 /* LoadingView.swift in Sources */,
 				F1C64EBA24EEBCD30055C705 /* Color.swift in Sources */,
 				F1DE331124EE6FEF008F6DF7 /* LikesView.swift in Sources */,
 				F1DE330224EE6F64008F6DF7 /* ContentView.swift in Sources */,
 				F1C64EBC24EF32C00055C705 /* CustomModifiers.swift in Sources */,
+				CED394322D70497B00452B3C /* UserProfile.swift in Sources */,
 				F1DE331524EE7003008F6DF7 /* ProfileView.swift in Sources */,
 				F1DE330024EE6F64008F6DF7 /* TinderCloneApp.swift in Sources */,
+				CED394342D7049A000452B3C /* EditProfileView.swift in Sources */,
 				F1D5515C24F6D029009F7C90 /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,7 +354,7 @@
 				DEVELOPMENT_TEAM = 8Y7F7UCN4K;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TinderClone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -354,7 +376,7 @@
 				DEVELOPMENT_TEAM = 8Y7F7UCN4K;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TinderClone/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -388,6 +410,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CED3942E2D7043C400452B3C /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CED3942F2D7043C400452B3C /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CED3942E2D7043C400452B3C /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F1DE32F424EE6F64008F6DF7 /* Project object */;
 }

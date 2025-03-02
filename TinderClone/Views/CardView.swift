@@ -3,17 +3,27 @@
 //  TinderClone
 //
 //  Created by JD on 21/08/20.
+//  Updated to allow programmatic like/nope animation
 //
 
 import SwiftUI
 
 struct CardView: View {
     var card: Card
+    
+    // The usual drag-based translation
     @State private var translation: CGSize = .zero
-
+    
+    // (1) A binding so the parent can force a swipe
+    @Binding var forcedSwipe: CGFloat?
+    
+    // (2) Called after we finish swiping off screen
+    var onSwiped: () -> Void
+    
     var body: some View {
         GeometryReader { geo in
             ZStack {
+                // Background image
                 Image(card.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -22,6 +32,7 @@ struct CardView: View {
                     .cornerRadius(15)
                     .modifier(ThemeShadow())
                 
+                // LIKE / NOPE + card info
                 VStack {
                     HStack {
                         if translation.width > 0 {
@@ -49,15 +60,17 @@ struct CardView: View {
                                 )
                                 .rotationEffect(.degrees(20))
                         }
-                    }.padding(.horizontal, 25)
+                    }
+                    .padding(.horizontal, 25)
+                    
                     Spacer()
                     CardInfoView(card: card)
                 }
                 .padding(.top, 40)
-//                .padding(.bottom, 150)
             }
-            .offset(x: self.translation.width, y: 0)
-            .rotationEffect(.degrees(Double(self.translation.width / geo.size.width) * 25), anchor: .bottom)
+            // Combine drag offset + forced swipe offset
+            .offset(x: translation.width, y: 0)
+            .rotationEffect(.degrees(Double(translation.width / geo.size.width) * 25), anchor: .bottom)
             .gesture(
                 DragGesture()
                     .onChanged { value in
@@ -65,27 +78,46 @@ struct CardView: View {
                     }.onEnded { value in
                         withAnimation(.easeInOut) {
                             if translation.width > 150 {
-                                self.translation.width = 500
+                                // user dragged right
+                                translation.width = 500
+                                removeAfterDelay(0.4)
                             } else if translation.width < -150 {
-                                self.translation.width = -500
+                                // user dragged left
+                                translation.width = -500
+                                removeAfterDelay(0.4)
                             } else {
-                                self.translation = .zero
+                                translation = .zero
                             }
                         }
                     }
             )
             .cornerRadius(15)
             .padding()
+            // (3) Listen for forced swipes from the parent
+            .onChange(of: forcedSwipe) { newValue in
+                guard let val = newValue else { return }
+                withAnimation(.easeInOut(duration: 0.4)) {
+                    translation.width = val
+                }
+                removeAfterDelay(0.4)
+            }
+        }
+    }
+    
+    // (4) Remove the card from the stack after a short delay
+    private func removeAfterDelay(_ delay: Double) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            onSwiped()
         }
     }
 }
 
-
+// (Unchanged)
 struct CardInfoView: View {
     let card: Card
+    
     var body: some View {
         VStack(spacing: 10) {
-//            Spacer()
             HStack(alignment: .bottom) {
                 VStack(spacing: 5) {
                     Text("\(card.name), \(card.age)")
@@ -104,20 +136,17 @@ struct CardInfoView: View {
         }
         .foregroundColor(.white)
         .padding()
-        .background(LinearGradient(gradient: Gradient(colors: [Color(UIColor.black).opacity(0.9),
-                                                               .clear]),
-                                    startPoint: .bottom,
-                                    endPoint: .top))
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color(UIColor.black).opacity(0.9),
+                    .clear
+                ]),
+                startPoint: .bottom,
+                endPoint: .top
+            )
+        )
         .cornerRadius(15)
         .clipped()
-    }
-}
-
-
-
-struct CardView_Previews: PreviewProvider {
-    static var previews: some View {
-        CardView(card: Card(name: "Test", age: 99, desc: "QWERTY", image: "img_gg"))
-            .preferredColorScheme(.dark)
     }
 }

@@ -1,10 +1,3 @@
-//
-//  LoadingView.swift
-//  TinderClone
-//
-//  Created by JD on 25/08/20.
-//
-
 import SwiftUI
 
 struct LoadingView: View {
@@ -28,13 +21,15 @@ struct LoadingView: View {
                         .stroke(Color.white, lineWidth: 3)
                 )
         }
-        .animation(
-            Animation.easeOut(duration: 2)
-                .repeatForever(autoreverses: false)
-        )
-            .onAppear {
+        // Instead of .animation(...), use withAnimation in onAppear
+        .onAppear {
+            withAnimation(
+                Animation.easeOut(duration: 2)
+                    .repeatForever(autoreverses: false)
+            ) {
                 self.animationAmount = 3
             }
+        }
     }
 }
 
