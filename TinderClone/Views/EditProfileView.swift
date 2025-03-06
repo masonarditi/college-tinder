@@ -1,4 +1,6 @@
 import SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
 
 struct EditProfileView: View {
     @Binding var userProfile: UserProfile
@@ -23,6 +25,8 @@ struct EditProfileView: View {
                     Stepper("Grade: \(userProfile.grade)", value: $userProfile.grade, in: 1...12)
                     
                     TextField("GPA", value: $userProfile.gpa, formatter: gpaFormatter)
+                    
+                    // satOrAct is now a string, so a simple text field
                     TextField("SAT/ACT Score", text: $userProfile.satOrAct)
                     
                     Toggle(isOn: $userProfile.isPublicSchool) {
@@ -69,6 +73,7 @@ struct EditProfileView: View {
                     presentationMode.wrappedValue.dismiss()
                 },
                 trailing: Button("Save") {
+                    saveProfileToFirestore()
                     presentationMode.wrappedValue.dismiss()
                 }
             )
@@ -76,10 +81,46 @@ struct EditProfileView: View {
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(selectedImage: $localImage)
         }
-        // Whenever localImage changes, store it in userProfile as Data
         .onChange(of: localImage) { newImage in
             if let uiImage = newImage {
                 userProfile.imageData = uiImage.pngData()
+            }
+        }
+    }
+    
+    private func saveProfileToFirestore() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let db = Firestore.firestore()
+        
+        // Build a dictionary from userProfile
+        var data: [String: Any] = [
+            "name": userProfile.name,
+            "grade": userProfile.grade,
+            "gpa": userProfile.gpa,
+            "satOrAct": userProfile.satOrAct,
+            "extracurriculars": userProfile.extracurriculars,
+            "isPublicSchool": userProfile.isPublicSchool
+        ]
+        
+        if let major = userProfile.intendedMajor, !major.isEmpty {
+            data["intendedMajor"] = major
+        }
+        if let honors = userProfile.academicHonors, !honors.isEmpty {
+            data["academicHonors"] = honors
+        }
+        
+        // If you truly want to store raw image data in Firestore (not recommended):
+        /*
+        if let imageData = userProfile.imageData, !imageData.isEmpty {
+            data["imageData"] = imageData.base64EncodedString()
+        }
+        */
+        
+        db.collection("users").document(uid).updateData(data) { error in
+            if let error = error {
+                print("Error updating profile: \(error.localizedDescription)")
+            } else {
+                print("Profile updated successfully.")
             }
         }
     }
