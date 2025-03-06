@@ -125,11 +125,14 @@ struct ProfileView: View {
     private func logOut() {
         do {
             try Auth.auth().signOut()
+            // Clear user defaults
+            UserDefaults.standard.removeObject(forKey: "UserProfileKey")
             isLoggedIn = false
         } catch {
             print("Sign out error: \(error.localizedDescription)")
         }
     }
+
     
     private func saveUserProfile(_ profile: UserProfile) {
         let encoder = JSONEncoder()
