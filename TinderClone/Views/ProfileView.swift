@@ -6,19 +6,21 @@ struct ProfileView: View {
     @Binding var isLoggedIn: Bool
     
     @State private var userProfile: UserProfile = {
+        // 1) Try to load from UserDefaults
         if let data = UserDefaults.standard.data(forKey: "UserProfileKey"),
            let decoded = try? JSONDecoder().decode(UserProfile.self, from: data) {
             return decoded
         } else {
+            // 2) Fallback to a blank/minimal profile
             return UserProfile(
-                name: "John Doe",
-                grade: 11,
-                gpa: 3.8,
-                satOrAct: "SAT: 1450",
-                extracurriculars: "Soccer team, Debate Club, Robotics",
-                isPublicSchool: true,
-                intendedMajor: "Computer Science",
-                academicHonors: "National Merit Semifinalist",
+                name: "",
+                grade: 9,
+                gpa: 0.0,
+                satOrAct: "",
+                extracurriculars: "",
+                isPublicSchool: false,
+                intendedMajor: nil,
+                academicHonors: nil,
                 imageData: nil
             )
         }
@@ -30,7 +32,7 @@ struct ProfileView: View {
         ScrollView {
             VStack(spacing: 20) {
                 
-                // 1) Profile Image
+                // Profile Image
                 if let data = userProfile.imageData,
                    let uiImage = UIImage(data: data) {
                     Image(uiImage: uiImage)
@@ -40,6 +42,7 @@ struct ProfileView: View {
                         .cornerRadius(60)
                         .shadow(radius: 5)
                 } else {
+                    // Placeholder image
                     Image("img_jd")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -48,27 +51,27 @@ struct ProfileView: View {
                         .shadow(radius: 5)
                 }
                 
-                // 2) Display relevant fields
+                // Display fields
                 VStack(spacing: 5) {
-                    Text("\(userProfile.name), Grade \(userProfile.grade)")
+                    Text("\(userProfile.name.isEmpty ? "Name not set" : userProfile.name), Grade \(userProfile.grade)")
                         .font(.system(size: 25))
                         .fontWeight(.heavy)
                     
-                    Text("GPA: \(userProfile.gpa, specifier: "%.2f") | \(userProfile.satOrAct)")
-                    Text(userProfile.extracurriculars)
+                    Text("GPA: \(userProfile.gpa, specifier: "%.2f") | \(userProfile.satOrAct.isEmpty ? "No SAT/ACT" : userProfile.satOrAct)")
+                    Text(userProfile.extracurriculars.isEmpty ? "No extracurriculars" : userProfile.extracurriculars)
                     
                     Text(userProfile.isPublicSchool ? "Public School" : "Private School")
                         .foregroundColor(.secondary)
                     
-                    if let major = userProfile.intendedMajor {
+                    if let major = userProfile.intendedMajor, !major.isEmpty {
                         Text("Intended Major: \(major)")
                     }
-                    if let honors = userProfile.academicHonors {
+                    if let honors = userProfile.academicHonors, !honors.isEmpty {
                         Text("Honors: \(honors)")
                     }
                 }
                 
-                // 3) Example row with "Settings" & "Edit Info"
+                // Buttons
                 HStack(spacing: 50) {
                     VStack(spacing: 8) {
                         Image(systemName: "gearshape.fill")
@@ -98,7 +101,7 @@ struct ProfileView: View {
                 }
                 .padding(.horizontal, 35)
                 
-                // 4) Log Out button at the bottom
+                // Log Out
                 Button(action: logOut) {
                     Text("Log Out")
                         .font(.headline)
@@ -108,9 +111,10 @@ struct ProfileView: View {
                         .cornerRadius(10)
                 }
             }
-            .padding() // so the content isn't flush against screen edges
+            .padding()
         }
         .sheet(isPresented: $showEditProfile) {
+            // Pass userProfile binding to EditProfileView
             EditProfileView(userProfile: $userProfile)
         }
         .onChange(of: userProfile) { newValue in
@@ -121,7 +125,6 @@ struct ProfileView: View {
     private func logOut() {
         do {
             try Auth.auth().signOut()
-            // If you want to navigate to login, do so in your app logic, e.g.:
             isLoggedIn = false
         } catch {
             print("Sign out error: \(error.localizedDescription)")
