@@ -1,11 +1,3 @@
-//
-//  CardView.swift
-//  TinderClone
-//
-//  Created by JD on 21/08/20.
-//  Updated to allow programmatic like/nope animation
-//
-
 import SwiftUI
 
 struct CardView: View {
@@ -23,14 +15,40 @@ struct CardView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Background image
-                Image(card.image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: geo.size.width - 32)
-                    .clipped()
-                    .cornerRadius(15)
-                    .modifier(ThemeShadow())
+                // Load image from card.imageURL
+                AsyncImage(url: URL(string: card.imageURL)) { phase in
+                    switch phase {
+                    case .empty:
+                        // Placeholder while loading
+                        Color.gray
+                            .frame(width: geo.size.width - 32)
+                            .cornerRadius(15)
+                            .modifier(ThemeShadow())
+                        
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: geo.size.width - 32)
+                            .clipped()
+                            .cornerRadius(15)
+                            .modifier(ThemeShadow())
+                        
+                    case .failure(_):
+                        // If there's an error, show a fallback
+                        Color.red
+                            .frame(width: geo.size.width - 32)
+                            .cornerRadius(15)
+                            .modifier(ThemeShadow())
+                        
+                    @unknown default:
+                        // Future cases
+                        Color.gray
+                            .frame(width: geo.size.width - 32)
+                            .cornerRadius(15)
+                            .modifier(ThemeShadow())
+                    }
+                }
                 
                 // LIKE / NOPE + card info
                 VStack {
@@ -112,7 +130,6 @@ struct CardView: View {
     }
 }
 
-// (Unchanged)
 struct CardInfoView: View {
     let card: Card
     
@@ -120,7 +137,7 @@ struct CardInfoView: View {
         VStack(spacing: 10) {
             HStack(alignment: .bottom) {
                 VStack(spacing: 5) {
-                    Text("\(card.name), \(card.age)")
+                    Text("\(card.name), \(card.year)")  // Replacing age with year
                         .font(.system(size: 30))
                         .fontWeight(.heavy)
                         .frame(maxWidth: .infinity, alignment: .leading)

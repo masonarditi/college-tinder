@@ -1,17 +1,13 @@
-//
-//  LikesView.swift
-//  TinderClone
-//
-//  Created by JD on 20/08/20.
-//
-
 import SwiftUI
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct LikesView: View {
     @State private var selected = 0
     
     var body: some View {
         VStack {
+            // Tab-like UI
             HStack {
                 Spacer()
                 Text("0 Likes")
@@ -32,8 +28,10 @@ struct LikesView: View {
                 Spacer()
             }
             .padding(.vertical)
+            
             Divider()
             Spacer()
+            
             if selected == 0 {
                 LikesSegmentView()
             } else {
@@ -43,12 +41,14 @@ struct LikesView: View {
     }
 }
 
+// MARK: - Previews
 struct LikesView_Previews: PreviewProvider {
     static var previews: some View {
         LikesView()
     }
 }
 
+// MARK: - LikesSegmentView
 struct LikesSegmentView: View {
     var body: some View {
         VStack(spacing: 40) {
@@ -65,10 +65,11 @@ struct LikesSegmentView: View {
     }
 }
 
-
+// MARK: - TopPicksSegmentView
 struct TopPicksSegmentView: View {
-    private let cards: [Card] = Card.cards
+    @State private var cards: [Card] = []
     private let layout = [GridItem(.flexible()), GridItem(.flexible())]
+    
     var body: some View {
         GeometryReader { geo in
             ScrollView {
@@ -79,18 +80,45 @@ struct TopPicksSegmentView: View {
                     .frame(width: 250)
                     .foregroundColor(.gray)
                     .padding(8)
+                
                 LazyVGrid(columns: layout, spacing: 8) {
                     ForEach(cards, id: \.id) { card in
-                        Image(card.image)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
+                        // Display each card in a grid cell
+                        VStack(spacing: 8) {
+                            // Use AsyncImage to load card.imageURL
+                            AsyncImage(url: URL(string: card.imageURL)) { phase in
+                                switch phase {
+                                case .empty:
+                                    Color.gray
+                                case .success(let image):
+                                    image.resizable()
+                                         .aspectRatio(contentMode: .fill)
+                                case .failure(_):
+                                    Color.red
+                                @unknown default:
+                                    Color.gray
+                                }
+                            }
                             .frame(width: (geo.size.width - 24)/2, height: 250)
                             .cornerRadius(15)
-    //                        .clipped()
                             .shadow(radius: 3)
+                            
+                            Text(card.name)
+                                .font(.headline)
+                            Text("Year: \(card.year)")
+                                .font(.subheadline)
+                            Text(card.desc)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
                 .padding(8)
+            }
+        }
+        .onAppear {
+            fetchColleges { fetched in
+                self.cards = fetched
             }
         }
     }
