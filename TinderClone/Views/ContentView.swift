@@ -21,7 +21,12 @@ struct Tab {
     ]
 }
 
+import SwiftUI
+
 struct ContentView: View {
+    // 1) Accept a Binding so we can manage login state
+    @Binding var isLoggedIn: Bool
+    
     let tabs = Tab.tabs
     @State private var selectedTab: Int = 0
     @State var isLoading: Bool = true
@@ -32,12 +37,15 @@ struct ContentView: View {
                 LoadingView()
             } else {
                 VStack {
+                    // The top bar of icons
                     HStack {
                         Spacer()
                         ForEach(tabs, id: \.id) { tab in
                             Image(systemName: tab.image)
                                 .font(.system(size: 25))
-                                .foregroundColor(tab.id == selectedTab ? tab.color : Color.gray.opacity(0.7))
+                                .foregroundColor(tab.id == selectedTab
+                                                 ? tab.color
+                                                 : Color.gray.opacity(0.7))
                                 .onTapGesture {
                                     withAnimation(.easeInOut(duration: 0.5)) {
                                         selectedTab = tab.id
@@ -48,6 +56,8 @@ struct ContentView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 45)
+                    
+                    // The TabView with subviews
                     TabView(selection: $selectedTab) {
                         HomeView()
                             .tag(0)
@@ -55,28 +65,26 @@ struct ContentView: View {
                             .tag(1)
                         MessagesView()
                             .tag(2)
-                        ProfileView()
+                        // passes isLoggedIn logic
+                        ProfileView(isLoggedIn: $isLoggedIn)
                             .tag(3)
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 }
-                .background(Color(UIColor.systemGroupedBackground).edgesIgnoringSafeArea(.all))
+                .background(Color(UIColor.systemGroupedBackground)
+                                .edgesIgnoringSafeArea(.all))
             }
-        }.onAppear {
+        }
+        .onAppear {
             onAppearCalled()
         }
     }
     
     private func onAppearCalled() {
+        // Example: 4-second loading
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             isLoading = false
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-        //            .preferredColorScheme(.dark)
-    }
-}

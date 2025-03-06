@@ -5,7 +5,7 @@ struct UserProfile: Codable, Equatable {
     var name: String
     var grade: Int
     var gpa: Double
-    var satOrAct: String
+    var satOrAct: Int
     var extracurriculars: String
     var isPublicSchool: Bool
     

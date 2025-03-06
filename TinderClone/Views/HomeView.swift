@@ -44,8 +44,10 @@ struct HomeView: View {
                         
                         // After the card finishes swiping, remove it from the array
                         onSwiped: {
+                            guard index >= 0 && index < cards.count else { return }
                             cards.remove(at: index)
                         }
+
                     )
                     .shadow(radius: 5)
                 }

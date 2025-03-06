@@ -7,10 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE83D4F92D79500F00634008 /* LoginSignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE83D4F82D79500C00634008 /* LoginSignupView.swift */; };
 		CED394302D7043C400452B3C /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = CED3942F2D7043C400452B3C /* Inject */; };
 		CED394322D70497B00452B3C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED394312D70497900452B3C /* UserProfile.swift */; };
 		CED394342D7049A000452B3C /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED394332D70499E00452B3C /* EditProfileView.swift */; };
 		CED394362D7049ED00452B3C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED394352D7049EC00452B3C /* ImagePicker.swift */; };
+		CEEBF1562D7910DE005F2E23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEEBF1552D7910DE005F2E23 /* GoogleService-Info.plist */; };
+		CEEBF15B2D7913A3005F2E23 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CEEBF15A2D7913A3005F2E23 /* FirebaseAuth */; };
+		CEEBF15D2D7913A3005F2E23 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CEEBF15C2D7913A3005F2E23 /* FirebaseFirestore */; };
+		CEEBF15F2D7913A3005F2E23 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CEEBF15E2D7913A3005F2E23 /* FirebaseFirestoreSwift */; };
+		CEEBF1622D7914EA005F2E23 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEEBF1612D7914EA005F2E23 /* FirebaseAnalytics */; };
 		F14E055224F446F200796331 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E055124F446F200796331 /* LoadingView.swift */; };
 		F1B52FAD24EFBDA0003A6AAC /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B52FAC24EFBDA0003A6AAC /* CardView.swift */; };
 		F1C64EBA24EEBCD30055C705 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C64EB924EEBCD30055C705 /* Color.swift */; };
@@ -27,15 +33,17 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE83D4F82D79500C00634008 /* LoginSignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupView.swift; sourceTree = "<group>"; };
 		CED394312D70497900452B3C /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		CED394332D70499E00452B3C /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		CED394352D7049EC00452B3C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		CEEBF1552D7910DE005F2E23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CEEBF1602D791463005F2E23 /* TinderClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F14E055124F446F200796331 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F1B52FAC24EFBDA0003A6AAC /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		F1C64EB924EEBCD30055C705 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		F1C64EBB24EF32C00055C705 /* CustomModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomModifiers.swift; sourceTree = "<group>"; };
 		F1D5515B24F6D029009F7C90 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
-		F1DE32FC24EE6F64008F6DF7 /* TinderClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1DE32FF24EE6F64008F6DF7 /* TinderCloneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinderCloneApp.swift; sourceTree = "<group>"; };
 		F1DE330124EE6F64008F6DF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F1DE330324EE6F65008F6DF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,6 +65,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				CED394302D7043C400452B3C /* Inject in Frameworks */,
+				CEEBF15B2D7913A3005F2E23 /* FirebaseAuth in Frameworks */,
+				CEEBF15D2D7913A3005F2E23 /* FirebaseFirestore in Frameworks */,
+				CEEBF1622D7914EA005F2E23 /* FirebaseAnalytics in Frameworks */,
+				CEEBF15F2D7913A3005F2E23 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,13 +98,14 @@
 			children = (
 				F1DE32FE24EE6F64008F6DF7 /* TinderClone */,
 				F1DE32FD24EE6F64008F6DF7 /* Products */,
+				CEEBF1552D7910DE005F2E23 /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
 		F1DE32FD24EE6F64008F6DF7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F1DE32FC24EE6F64008F6DF7 /* TinderClone.app */,
+				CEEBF1602D791463005F2E23 /* TinderClone.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -123,6 +136,7 @@
 		F1DE331624EE7009008F6DF7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CE83D4F82D79500C00634008 /* LoginSignupView.swift */,
 				CED394352D7049EC00452B3C /* ImagePicker.swift */,
 				CED394332D70499E00452B3C /* EditProfileView.swift */,
 				F1DE330124EE6F64008F6DF7 /* ContentView.swift */,
@@ -153,7 +167,7 @@
 			);
 			name = TinderClone;
 			productName = TinderClone;
-			productReference = F1DE32FC24EE6F64008F6DF7 /* TinderClone.app */;
+			productReference = CEEBF1602D791463005F2E23 /* TinderClone.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -181,6 +195,7 @@
 			mainGroup = F1DE32F324EE6F64008F6DF7;
 			packageReferences = (
 				CED3942E2D7043C400452B3C /* XCRemoteSwiftPackageReference "Inject" */,
+				CEEBF1592D7913A3005F2E23 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = F1DE32FD24EE6F64008F6DF7 /* Products */;
 			projectDirPath = "";
@@ -197,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1DE330724EE6F65008F6DF7 /* Preview Assets.xcassets in Resources */,
+				CEEBF1562D7910DE005F2E23 /* GoogleService-Info.plist in Resources */,
 				F1DE330424EE6F65008F6DF7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -211,6 +227,7 @@
 				F1DE331324EE6FFB008F6DF7 /* MessagesView.swift in Sources */,
 				F1B52FAD24EFBDA0003A6AAC /* CardView.swift in Sources */,
 				F1DE330F24EE6FC9008F6DF7 /* HomeView.swift in Sources */,
+				CE83D4F92D79500F00634008 /* LoginSignupView.swift in Sources */,
 				CED394362D7049ED00452B3C /* ImagePicker.swift in Sources */,
 				F14E055224F446F200796331 /* LoadingView.swift in Sources */,
 				F1C64EBA24EEBCD30055C705 /* Color.swift in Sources */,
@@ -351,15 +368,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TinderClone/Preview Content\"";
-				DEVELOPMENT_TEAM = 8Y7F7UCN4K;
+				DEVELOPMENT_TEAM = SNZL9DWHSZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TinderClone/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "College Tinder";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.iamjdpatel.swiftui.TinderClone;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.masonarditi.college-tinder-com.masonarditi.college-tinder-com.masonarditi.college-tinder-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -373,15 +391,16 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"TinderClone/Preview Content\"";
-				DEVELOPMENT_TEAM = 8Y7F7UCN4K;
+				DEVELOPMENT_TEAM = SNZL9DWHSZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = TinderClone/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "College Tinder";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.iamjdpatel.swiftui.TinderClone;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.masonarditi.college-tinder-com.masonarditi.college-tinder-com.masonarditi.college-tinder-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -420,6 +439,14 @@
 				minimumVersion = 1.5.2;
 			};
 		};
+		CEEBF1592D7913A3005F2E23 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -427,6 +454,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CED3942E2D7043C400452B3C /* XCRemoteSwiftPackageReference "Inject" */;
 			productName = Inject;
+		};
+		CEEBF15A2D7913A3005F2E23 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEEBF1592D7913A3005F2E23 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		CEEBF15C2D7913A3005F2E23 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEEBF1592D7913A3005F2E23 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		CEEBF15E2D7913A3005F2E23 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEEBF1592D7913A3005F2E23 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		CEEBF1612D7914EA005F2E23 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEEBF1592D7913A3005F2E23 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
