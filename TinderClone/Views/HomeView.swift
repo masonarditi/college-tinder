@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
@@ -31,19 +29,41 @@ struct HomeView: View {
     var body: some View {
         VStack {
             ZStack {
-                // Show each card in the array
-                ForEach(cards.indices, id: \.self) { index in
-                    let isTopCard = (index == cards.count - 1)
-                    
-                    CardView(
-                        card: cards[index],
-                        forcedSwipe: isTopCard ? swipeBinding(for: index) : .constant(nil),
-                        onSwiped: {
-                            guard index >= 0 && index < cards.count else { return }
-                            cards.remove(at: index)
+                if cards.isEmpty {
+                    VStack {
+                        Spacer()
+                        
+                        VStack(spacing: 20) {
+                            Image(systemName: "heart.slash.fill")
+                                .font(.system(size: 70))
+                                .foregroundColor(.gray)
+                            
+                            Text("No More Colleges")
+                                .font(.title2)
+                                .foregroundColor(.gray)
+                            
+                            Text("Check back later for more options")
+                                .font(.callout)
+                                .foregroundColor(.gray.opacity(0.8))
                         }
-                    )
-                    .shadow(radius: 5)
+                        
+                        Spacer()
+                    }
+                } else {
+                    // Show each card in the array
+                    ForEach(cards.indices, id: \.self) { index in
+                        let isTopCard = (index == cards.count - 1)
+                        
+                        CardView(
+                            card: cards[index],
+                            forcedSwipe: isTopCard ? swipeBinding(for: index) : .constant(nil),
+                            onSwiped: {
+                                guard index >= 0 && index < cards.count else { return }
+                                cards.remove(at: index)
+                            }
+                        )
+                        .shadow(radius: 5)
+                    }
                 }
             }
             Spacer()
@@ -69,6 +89,8 @@ struct HomeView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 5)
+            .opacity(cards.isEmpty ? 0.5 : 1)
+            .disabled(cards.isEmpty)
         }
         .background(Color(UIColor.systemGroupedBackground).edgesIgnoringSafeArea(.all))
         .onAppear {
