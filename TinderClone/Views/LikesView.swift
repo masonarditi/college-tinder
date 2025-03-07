@@ -104,40 +104,7 @@ struct LikesSegmentView: View {
                 // Show each liked card in a vertical list
                 LazyVStack(spacing: 20) {
                     ForEach(likedCards, id: \.id) { card in
-                        // A simple row for each liked college
-                        HStack {
-                            AsyncImage(url: URL(string: card.imageURL)) { phase in
-                                switch phase {
-                                case .empty:
-                                    Color.gray
-                                case .success(let image):
-                                    image.resizable()
-                                         .scaledToFill()
-                                case .failure(_):
-                                    Color.red
-                                @unknown default:
-                                    Color.gray
-                                }
-                            }
-                            .frame(width: 100, height: 80)
-                            .cornerRadius(8)
-                            .clipped()
-                            
-                            VStack(alignment: .leading, spacing: 5) {
-                                Text(card.name)
-                                    .font(.headline)
-                                Text("Year: \(card.year)")
-                                    .font(.subheadline)
-                                Text(card.desc)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                            Spacer()
-                        }
-                        .padding()
-                        .background(Color(UIColor.secondarySystemBackground))
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
+                        LikedCardRow(card: card)
                     }
                 }
                 .padding()
@@ -152,6 +119,68 @@ struct LikesSegmentView: View {
     }
 }
 
+// Add LikedCardRow
+struct LikedCardRow: View {
+    let card: Card
+    @State private var loadedImage: UIImage? = nil
+    
+    var body: some View {
+        HStack {
+            if let image = loadedImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 80)
+                    .cornerRadius(8)
+                    .clipped()
+            } else {
+                Color.gray
+                    .frame(width: 100, height: 80)
+                    .cornerRadius(8)
+                    .onAppear {
+                        loadImage()
+                    }
+            }
+            
+            VStack(alignment: .leading, spacing: 5) {
+                Text(card.name)
+                    .font(.headline)
+                Text("Year: \(card.year)")
+                    .font(.subheadline)
+                Text(card.desc)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+        }
+        .padding()
+        .background(Color(UIColor.secondarySystemBackground))
+        .cornerRadius(10)
+        .shadow(radius: 2)
+    }
+    
+    private func loadImage() {
+        guard let url = URL(string: card.imageURL) else { return }
+        
+        // Check NSCache first
+        if let cachedImage = ImageCache.shared.get(forKey: url.absoluteString) {
+            self.loadedImage = cachedImage
+            return
+        }
+        
+        // If not in cache, download it
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            DispatchQueue.main.async {
+                if let image = UIImage(data: data) {
+                    self.loadedImage = image
+                    ImageCache.shared.set(image, forKey: url.absoluteString)
+                }
+            }
+        }.resume()
+    }
+}
 
 // MARK: - TopPicksSegmentView
 struct TopPicksSegmentView: View {
@@ -184,4 +213,3 @@ struct TopPicksSegmentView: View {
         }
     }
 }
-
