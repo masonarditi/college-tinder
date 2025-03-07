@@ -5,25 +5,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-// If you have a separate file for fetchColleges, remove this function here.
-func fetchColleges(completion: @escaping ([Card]) -> Void) {
-    let db = Firestore.firestore()
-    db.collection("colleges").getDocuments { snapshot, error in
-        if let error = error {
-            print("Error fetching colleges: \(error.localizedDescription)")
-            completion([])
-            return
-        }
-        guard let docs = snapshot?.documents else {
-            completion([])
-            return
-        }
-        let fetchedCards: [Card] = docs.compactMap { doc in
-            try? doc.data(as: Card.self)
-        }
-        completion(fetchedCards)
-    }
-}
 
 struct HomeView: View {
     @State private var cards: [Card] = []

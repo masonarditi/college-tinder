@@ -60,6 +60,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				DislikedCollegesService.swift,
+				FetchCollegesService.swift,
 				LikedCollegesService.swift,
 			);
 			target = F1DE32FB24EE6F64008F6DF7 /* TinderClone */;
@@ -68,6 +69,7 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CE077F472D7169C500CFA69F /* Services */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (CE83D5192D7A6F7400634008 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Services; sourceTree = "<group>"; };
+		CE1888292D7AAB7C002BF134 /* Other */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Other; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 		F1DE32FE24EE6F64008F6DF7 /* TinderClone */ = {
 			isa = PBXGroup;
 			children = (
+				CE1888292D7AAB7C002BF134 /* Other */,
 				F1DE32FF24EE6F64008F6DF7 /* TinderCloneApp.swift */,
 				F109F08724F3A4C600F1A4E1 /* Extension */,
 				F1D5515A24F6D01D009F7C90 /* Model */,
@@ -175,6 +178,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CE1888292D7AAB7C002BF134 /* Other */,
 			);
 			name = TinderClone;
 			productName = TinderClone;

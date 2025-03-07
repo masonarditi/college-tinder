@@ -1,16 +1,20 @@
+//LikesView
+
 import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseAuth
 
 struct LikesView: View {
     @State private var selected = 0
+    @State private var likedCount = 0  // <-- We'll store the dynamic count here
     
     var body: some View {
         VStack {
             // Tab-like UI
             HStack {
                 Spacer()
-                Text("0 Likes")
+                Text("\(likedCount) Likes")  // <-- Display the count
                     .font(.title2)
                     .bold()
                     .foregroundColor(selected == 0 ? .gold : .gray)
@@ -38,32 +42,116 @@ struct LikesView: View {
                 TopPicksSegmentView()
             }
         }
+        // 1) When this view appears, fetch the count from Firestore
+        .onAppear {
+            fetchLikedCount { count in
+                likedCount = count
+            }
+        }
     }
 }
 
-// MARK: - Previews
-struct LikesView_Previews: PreviewProvider {
-    static var previews: some View {
-        LikesView()
+func fetchLikedCount(completion: @escaping (Int) -> Void) {
+    // 1) Check if a user is signed in
+    guard let userId = Auth.auth().currentUser?.uid else {
+        completion(0)
+        return
+    }
+    let db = Firestore.firestore()
+    
+    // 2) Fetch the user doc
+    db.collection("users").document(userId).getDocument { snapshot, error in
+        if let error = error {
+            print("Error fetching user doc: \(error.localizedDescription)")
+            completion(0)
+            return
+        }
+        
+        // 3) Get the array from the doc
+        guard let data = snapshot?.data(),
+              let likedIDs = data["likedColleges"] as? [String]
+        else {
+            // If it's missing or empty, return 0
+            completion(0)
+            return
+        }
+        
+        // 4) Return the count
+        completion(likedIDs.count)
     }
 }
 
 // MARK: - LikesSegmentView
 struct LikesSegmentView: View {
+    @State private var likedCards: [Card] = []
+    
     var body: some View {
-        VStack(spacing: 40) {
-            Spacer()
-            Image(systemName: "suit.heart.fill")
-                .font(.system(size: 60))
-                .foregroundColor(Color.gray.opacity(0.3))
-            Text("Upgrade to Gold to see people who already liked you.")
-                .frame(width: 230)
-                .multilineTextAlignment(.center)
-                .foregroundColor(.gray)
-            Spacer()
+        ScrollView {
+            if likedCards.isEmpty {
+                // If no liked cards, show a placeholder
+                VStack(spacing: 40) {
+                    Spacer()
+                    Image(systemName: "suit.heart.fill")
+                        .font(.system(size: 60))
+                        .foregroundColor(Color.gray.opacity(0.3))
+                    Text("No liked colleges yet.")
+                        .frame(width: 230)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
+            } else {
+                // Show each liked card in a vertical list
+                LazyVStack(spacing: 20) {
+                    ForEach(likedCards, id: \.id) { card in
+                        // A simple row for each liked college
+                        HStack {
+                            AsyncImage(url: URL(string: card.imageURL)) { phase in
+                                switch phase {
+                                case .empty:
+                                    Color.gray
+                                case .success(let image):
+                                    image.resizable()
+                                         .scaledToFill()
+                                case .failure(_):
+                                    Color.red
+                                @unknown default:
+                                    Color.gray
+                                }
+                            }
+                            .frame(width: 100, height: 80)
+                            .cornerRadius(8)
+                            .clipped()
+                            
+                            VStack(alignment: .leading, spacing: 5) {
+                                Text(card.name)
+                                    .font(.headline)
+                                Text("Year: \(card.year)")
+                                    .font(.subheadline)
+                                Text(card.desc)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                        }
+                        .padding()
+                        .background(Color(UIColor.secondarySystemBackground))
+                        .cornerRadius(10)
+                        .shadow(radius: 2)
+                    }
+                }
+                .padding()
+            }
+        }
+        .onAppear {
+            // Fetch the liked doc IDs -> fetch each doc -> decode into Card
+            fetchLikedColleges { fetched in
+                self.likedCards = fetched
+            }
         }
     }
 }
+
 
 // MARK: - TopPicksSegmentView
 struct TopPicksSegmentView: View {
@@ -83,34 +171,7 @@ struct TopPicksSegmentView: View {
                 
                 LazyVGrid(columns: layout, spacing: 8) {
                     ForEach(cards, id: \.id) { card in
-                        // Display each card in a grid cell
-                        VStack(spacing: 8) {
-                            // Use AsyncImage to load card.imageURL
-                            AsyncImage(url: URL(string: card.imageURL)) { phase in
-                                switch phase {
-                                case .empty:
-                                    Color.gray
-                                case .success(let image):
-                                    image.resizable()
-                                         .aspectRatio(contentMode: .fill)
-                                case .failure(_):
-                                    Color.red
-                                @unknown default:
-                                    Color.gray
-                                }
-                            }
-                            .frame(width: (geo.size.width - 24)/2, height: 250)
-                            .cornerRadius(15)
-                            .shadow(radius: 3)
-                            
-                            Text(card.name)
-                                .font(.headline)
-                            Text("Year: \(card.year)")
-                                .font(.subheadline)
-                            Text(card.desc)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
+                        // ...
                     }
                 }
                 .padding(8)
@@ -123,3 +184,4 @@ struct TopPicksSegmentView: View {
         }
     }
 }
+
