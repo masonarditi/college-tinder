@@ -86,7 +86,7 @@ struct LikesSegmentView: View {
     @State private var likedCards: [Card] = []
     
     var body: some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: true) {
             if likedCards.isEmpty {
                 // If no liked cards, show a placeholder
                 VStack(spacing: 40) {
@@ -100,47 +100,59 @@ struct LikesSegmentView: View {
                         .foregroundColor(.gray)
                     Spacer()
                 }
+                .frame(minHeight: UIScreen.main.bounds.height - 200) // Add minimum height
             } else {
                 // Show each liked card in a vertical list
-                LazyVStack(spacing: 20) {
+                LazyVStack(spacing: 16) {
                     ForEach(likedCards, id: \.id) { card in
-                        // A simple row for each liked college
-                        HStack {
+                        HStack(spacing: 16) {
                             AsyncImage(url: URL(string: card.imageURL)) { phase in
                                 switch phase {
                                 case .empty:
                                     Color.gray
                                 case .success(let image):
-                                    image.resizable()
-                                         .scaledToFill()
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
                                 case .failure(_):
                                     Color.red
                                 @unknown default:
                                     Color.gray
                                 }
                             }
-                            .frame(width: 100, height: 80)
-                            .cornerRadius(8)
+                            .frame(width: 120, height: 90)
+                            .cornerRadius(10)
                             .clipped()
                             
-                            VStack(alignment: .leading, spacing: 5) {
+                            VStack(alignment: .leading, spacing: 8) {
                                 Text(card.name)
-                                    .font(.headline)
-                                Text("Year: \(card.year)")
+                                    .font(.title3)
+                                    .fontWeight(.bold)
+                                
+                                Text("Founded: \(card.year)")
                                     .font(.subheadline)
+                                    .foregroundColor(.secondary)
+                                
                                 Text(card.desc)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
+                                    .lineLimit(2)
                             }
-                            Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 8)
                         }
-                        .padding()
+                        .padding(.horizontal)
+                        .padding(.vertical, 12)
                         .background(Color(UIColor.secondarySystemBackground))
-                        .cornerRadius(10)
-                        .shadow(radius: 2)
+                        .cornerRadius(12)
+                        .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: 2)
                     }
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 8)
             }
         }
         .onAppear {
@@ -184,4 +196,3 @@ struct TopPicksSegmentView: View {
         }
     }
 }
-

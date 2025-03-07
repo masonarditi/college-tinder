@@ -5,6 +5,7 @@ import FirebaseAuth
 
 
 struct HomeView: View {
+    
     @State private var cards: [Card] = []
     
     // Buttons: reload, dislike, like
