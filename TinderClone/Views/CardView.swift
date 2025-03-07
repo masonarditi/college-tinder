@@ -16,42 +16,30 @@ struct CardView: View {
     // (2) Called after we finish swiping off screen
     var onSwiped: () -> Void
     
+    // Add image cache
+    @State private var loadedImage: UIImage? = nil
+    
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Load image from card.imageURL
-                AsyncImage(url: URL(string: card.imageURL)) { phase in
-                    switch phase {
-                    case .empty:
-                        // Placeholder while loading
-                        Color.gray
-                            .frame(width: geo.size.width - 32)
-                            .cornerRadius(15)
-                            .modifier(ThemeShadow())
-                        
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width - 32)
-                            .clipped()
-                            .cornerRadius(15)
-                            .modifier(ThemeShadow())
-                        
-                    case .failure(_):
-                        // If there's an error, show a fallback
-                        Color.red
-                            .frame(width: geo.size.width - 32)
-                            .cornerRadius(15)
-                            .modifier(ThemeShadow())
-                        
-                    @unknown default:
-                        // Future cases
-                        Color.gray
-                            .frame(width: geo.size.width - 32)
-                            .cornerRadius(15)
-                            .modifier(ThemeShadow())
-                    }
+                // Replace AsyncImage with cached image loading
+                if let image = loadedImage {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: geo.size.width - 32)
+                        .clipped()
+                        .cornerRadius(15)
+                        .modifier(ThemeShadow())
+                } else {
+                    // Show loading placeholder
+                    Color.gray
+                        .frame(width: geo.size.width - 32)
+                        .cornerRadius(15)
+                        .modifier(ThemeShadow())
+                        .onAppear {
+                            loadImage()
+                        }
                 }
                 
                 // LIKE / NOPE + card info
@@ -150,6 +138,29 @@ struct CardView: View {
         }
     }
     
+    // Add image loading function
+    private func loadImage() {
+        guard let url = URL(string: card.imageURL) else { return }
+        
+        // Check NSCache first
+        if let cachedImage = ImageCache.shared.get(forKey: url.absoluteString) {
+            self.loadedImage = cachedImage
+            return
+        }
+        
+        // If not in cache, download it
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            DispatchQueue.main.async {
+                if let image = UIImage(data: data) {
+                    self.loadedImage = image
+                    ImageCache.shared.set(image, forKey: url.absoluteString)
+                }
+            }
+        }.resume()
+    }
+    
     // (4) Remove the card from the stack after a short delay
     private func removeAfterDelay(_ delay: Double) {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
@@ -193,5 +204,24 @@ struct CardInfoView: View {
         )
         .cornerRadius(15)
         .clipped()
+    }
+}
+
+class ImageCache {
+    static let shared = ImageCache()
+    private let cache = NSCache<NSString, UIImage>()
+    
+    private init() {
+        // Set cache limits
+        cache.countLimit = 100
+        cache.totalCostLimit = 50 * 1024 * 1024 // 50MB
+    }
+    
+    func get(forKey key: String) -> UIImage? {
+        return cache.object(forKey: key as NSString)
+    }
+    
+    func set(_ image: UIImage, forKey key: String) {
+        cache.setObject(image, forKey: key as NSString)
     }
 }
