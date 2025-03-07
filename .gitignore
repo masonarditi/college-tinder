@@ -1,0 +1,70 @@
+# Ignore bulk-firestore directory and its contents
+bulk-firestore/
+bulk-firestore/*
+bulk-firestore/**/*
+**/bulk-firestore/
+
+# Private keys and sensitive data
+**/*.pem
+**/*.key
+**/*.p12
+**/*.json
+**/serviceAccount*.json
+**/credentials*.json
+
+# Xcode
+## User settings
+xcuserdata/
+*.xcuserstate
+
+## Obj-C/Swift specific
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods
+Pods/
+*.xcworkspace
+!default.xcworkspace
+
+# Carthage
+Carthage/Build/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code Injection
+iOSInjectionProject/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.*
+*.env 
