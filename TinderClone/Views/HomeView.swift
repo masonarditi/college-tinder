@@ -1,6 +1,9 @@
+
+
 import SwiftUI
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseAuth
 
 // If you have a separate file for fetchColleges, remove this function here.
 func fetchColleges(completion: @escaping ([Card]) -> Void) {
@@ -92,7 +95,6 @@ struct HomeView: View {
         }
     }
     
-    // MARK: - Handle Button Taps
     private func handleButtonTap(_ id: Int) {
         guard !cards.isEmpty || id == 0 else { return }
         
@@ -101,15 +103,41 @@ struct HomeView: View {
             // Reload => fetch from Firestore again
             reloadCards()
             
-        case 1:
-            // Dislike => forcibly swipe left
+        case 1: // Dislike => forcibly swipe left
             if let topIndex = cards.indices.last {
+                // 1) Firestore call to dislikedColleges
+                if let userId = Auth.auth().currentUser?.uid,
+                   let docId = cards[topIndex].id {
+                    DislikedCollegesService.addCollegeToDisliked(userId: userId, collegeId: docId) { result in
+                        switch result {
+                        case .success():
+                            print("Disliked doc: \(docId)")
+                        case .failure(let error):
+                            print("Error disliking doc: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                
+                // 2) Forcibly swipe left
                 setSwipeValue(for: topIndex, to: -500)
             }
             
-        case 3:
-            // Like => forcibly swipe right
+        case 3: // Like => forcibly swipe right
             if let topIndex = cards.indices.last {
+                // 1) Firestore call to likedColleges
+                if let userId = Auth.auth().currentUser?.uid,
+                   let docId = cards[topIndex].id {
+                    LikedCollegesService.addCollegeToLiked(userId: userId, collegeId: docId) { result in
+                        switch result {
+                        case .success():
+                            print("Liked doc: \(docId)")
+                        case .failure(let error):
+                            print("Error liking doc: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                
+                // 2) Forcibly swipe right
                 setSwipeValue(for: topIndex, to: 500)
             }
             
@@ -117,7 +145,7 @@ struct HomeView: View {
             break
         }
     }
-    
+
     // MARK: - Force a card to swipe
     private func setSwipeValue(for index: Int, to value: CGFloat) {
         forcedSwipeValues[index] = value
