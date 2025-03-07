@@ -103,41 +103,47 @@ struct HomeView: View {
             // Reload => fetch from Firestore again
             reloadCards()
             
-        case 1: // Dislike => forcibly swipe left
+        case 1:
+            // Dislike => forcibly swipe left
             if let topIndex = cards.indices.last {
-                // 1) Firestore call to dislikedColleges
+                // 1) Attempt to get user + doc ID
                 if let userId = Auth.auth().currentUser?.uid,
                    let docId = cards[topIndex].id {
-                    DislikedCollegesService.addCollegeToDisliked(userId: userId, collegeId: docId) { result in
+                    
+                    // 2) Call DislikedCollegesService
+                    DislikedCollegesService.addCollegeToDisliked(userId: userId, collegeDocId: docId) { result in
                         switch result {
                         case .success():
-                            print("Disliked doc: \(docId)")
+                            print("Disliked doc ID: \(docId)")
                         case .failure(let error):
                             print("Error disliking doc: \(error.localizedDescription)")
                         }
                     }
                 }
                 
-                // 2) Forcibly swipe left
+                // 3) Forcibly swipe left
                 setSwipeValue(for: topIndex, to: -500)
             }
             
-        case 3: // Like => forcibly swipe right
+        case 3:
+            // Like => forcibly swipe right
             if let topIndex = cards.indices.last {
-                // 1) Firestore call to likedColleges
+                // 1) Attempt to get user + doc ID
                 if let userId = Auth.auth().currentUser?.uid,
                    let docId = cards[topIndex].id {
-                    LikedCollegesService.addCollegeToLiked(userId: userId, collegeId: docId) { result in
+                    
+                    // 2) Call LikedCollegesService
+                    LikedCollegesService.addCollegeToLiked(userId: userId, collegeDocId: docId) { result in
                         switch result {
                         case .success():
-                            print("Liked doc: \(docId)")
+                            print("Liked doc ID: \(docId)")
                         case .failure(let error):
                             print("Error liking doc: \(error.localizedDescription)")
                         }
                     }
                 }
                 
-                // 2) Forcibly swipe right
+                // 3) Forcibly swipe right
                 setSwipeValue(for: topIndex, to: 500)
             }
             
@@ -145,6 +151,7 @@ struct HomeView: View {
             break
         }
     }
+
 
     // MARK: - Force a card to swipe
     private func setSwipeValue(for index: Int, to value: CGFloat) {
