@@ -1,38 +1,33 @@
+//LoadingView
+
 import SwiftUI
 
 struct LoadingView: View {
-    @State private var animationAmount: CGFloat = 1
+    @State private var scale: CGFloat = 0.8
     
     var body: some View {
         ZStack {
-            Circle()
-                .foregroundColor(Color.red.opacity(0.3))
-                .frame(width: 100, height: 100)
-                .scaleEffect(animationAmount)
-                .opacity(Double(3 - animationAmount))
-
-            Image("img_jd")
+            // Tinder flame icon
+            Image(systemName: "flame.fill")
                 .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 100, height: 100)
-                .cornerRadius(50)
-                .overlay(
-                    Circle()
-                        .stroke(Color.white, lineWidth: 3)
-                )
+                .scaledToFit()
+                .frame(width: 70, height: 70)
+                .foregroundColor(.red)
+                .scaleEffect(scale)
         }
-        // Instead of .animation(...), use withAnimation in onAppear
         .onAppear {
+            // Subtle pulse animation
             withAnimation(
-                Animation.easeOut(duration: 2)
-                    .repeatForever(autoreverses: false)
+                Animation.easeInOut(duration: 0.8)
+                    .repeatForever(autoreverses: true)
             ) {
-                self.animationAmount = 3
+                scale = 1.0
             }
         }
     }
 }
 
+// Preview remains the same
 struct LoadingView_Previews: PreviewProvider {
     static var previews: some View {
         LoadingView()
