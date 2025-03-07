@@ -1,6 +1,8 @@
 //CardView
 
 import SwiftUI
+import FirebaseAuth
+import FirebaseFirestoreSwift
 
 struct CardView: View {
     var card: Card
@@ -95,21 +97,45 @@ struct CardView: View {
                 DragGesture()
                     .onChanged { value in
                         self.translation = value.translation
-                    }.onEnded { value in
+                    }.onEnded { _ in
                         withAnimation(.easeInOut) {
                             if translation.width > 150 {
-                                // user dragged right
+                                // user dragged right => "like"
+                                if let user = Auth.auth().currentUser,
+                                   let docId = card.id {
+                                    LikedCollegesService.addCollegeToLiked(userId: user.uid, collegeDocId: docId) { result in
+                                        switch result {
+                                        case .success():
+                                            print("Doc ID liked: \(docId)")
+                                        case .failure(let error):
+                                            print("Error liking doc: \(error.localizedDescription)")
+                                        }
+                                    }
+                                }
                                 translation.width = 500
                                 removeAfterDelay(0.4)
                             } else if translation.width < -150 {
-                                // user dragged left
+                                // user dragged left => "dislike"
+                                if let user = Auth.auth().currentUser,
+                                   let docId = card.id {
+                                    DislikedCollegesService.addCollegeToDisliked(userId: user.uid, collegeDocId: docId) { result in
+                                        switch result {
+                                        case .success():
+                                            print("Doc ID disliked: \(docId)")
+                                        case .failure(let error):
+                                            print("Error disliking doc: \(error.localizedDescription)")
+                                        }
+                                    }
+                                }
                                 translation.width = -500
                                 removeAfterDelay(0.4)
                             } else {
+                                // Not enough drag => reset
                                 translation = .zero
                             }
                         }
                     }
+
             )
             .cornerRadius(15)
             .padding()
