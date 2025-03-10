@@ -58,6 +58,41 @@ struct CardView: View {
                         }
                 }
                 
+                // Add back the LIKE/NOPE overlay
+                VStack {
+                    HStack {
+                        if translation.width > 0 {
+                            Text("LIKE")
+                                .tracking(3)
+                                .font(.title)
+                                .padding(.horizontal)
+                                .foregroundColor(.green)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(Color.green, lineWidth: 3)
+                                )
+                                .rotationEffect(.degrees(-20))
+                            Spacer()
+                        } else if translation.width < 0 {
+                            Spacer()
+                            Text("NOPE")
+                                .tracking(3)
+                                .font(.title)
+                                .padding(.horizontal)
+                                .foregroundColor(.red)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(Color.red, lineWidth: 3)
+                                )
+                                .rotationEffect(.degrees(20))
+                        }
+                    }
+                    .padding(.horizontal, 25)
+                    .padding(.top, 40)
+                    
+                    Spacer()
+                }
+                
                 // Overlays for pages
                 if currentPage == 1 {
                     pageOneOverlay()
