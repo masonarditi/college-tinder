@@ -17,7 +17,7 @@ struct CardView: View {
     // Image caching
     @State private var loadedImage: UIImage? = nil
     
-    // (A) Track which "page" we are on (1, 2, or 3)
+    // Track which "page" we are on (1, 2, or 3)
     @State private var currentPage = 1
     
     var body: some View {
@@ -51,13 +51,10 @@ struct CardView: View {
                 // Overlays depending on currentPage
                 // ---------------------------------------
                 if currentPage == 1 {
-                    // Page 1: unblurred image + minimal text
                     pageOneOverlay()
                 } else if currentPage == 2 {
-                    // Page 2: blurred background + partial fields
                     pageTwoOverlay()
                 } else {
-                    // Page 3: blurred background + remaining fields
                     pageThreeOverlay()
                 }
             }
@@ -118,11 +115,9 @@ struct CardView: View {
             .onTapGesture {
                 cyclePage()
             }
-            
-            // Keep bounding/corner styling
             .cornerRadius(15)
             .padding()
-            // (3) Listen for forced swipes from parent
+            // (3) Listen for forced swipes from the parent
             .onChange(of: forcedSwipe) { newValue in
                 guard let val = newValue else { return }
                 withAnimation(.easeInOut(duration: 0.4)) {
@@ -136,17 +131,18 @@ struct CardView: View {
     // MARK: - Page Overlays
     
     private func pageOneOverlay() -> some View {
-        // Minimal text overlay
+        // Minimal text overlay on unblurred image
         VStack {
             Spacer()
             VStack(spacing: 5) {
                 Text("\(card.name), \(card.year)")
-                    .font(.system(size: 30))
+                    .font(.title2)
                     .fontWeight(.heavy)
                 Text(card.desc)
                     .font(.subheadline)
             }
             .foregroundColor(.white)
+            .frame(maxWidth: .infinity, alignment: .center)
             .padding()
         }
         .padding(.bottom, 20)
@@ -154,39 +150,69 @@ struct CardView: View {
     
     private func pageTwoOverlay() -> some View {
         // Blurred background + partial fields
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 16) {
             Spacer()
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Athletics: \(card.athletics)/5")
-                Text("Dining: \(card.diningRating)/5")
-                Text("Greek Life: \(card.greekLife)/5")
-                Text("Type: \(card.institutionType)")
-                Text("Location: \(card.location)")
+            VStack(alignment: .leading, spacing: 12) {
+                // Star fields with emojis
+                HStack {
+                    Text("🏈 Athletics:")
+                        .font(.title3).bold()
+                    starRating(card.athletics)
+                }
+                
+                HStack {
+                    Text("🍽 Dining:")
+                        .font(.title3).bold()
+                    starRating(card.diningRating)
+                }
+                
+                HStack {
+                    Text("🏛 Greek Life:")
+                        .font(.title3).bold()
+                    starRating(card.greekLife)
+                }
+                
+                // Plain text
+                Text("🏫 Type: \(card.institutionType)")
+                    .font(.title3).bold()
+                Text("📍 Location: \(card.location)")
+                    .font(.title3).bold()
             }
-            .font(.headline)
             .foregroundColor(.white)
-            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
         }
         .padding(.bottom, 20)
     }
     
     private func pageThreeOverlay() -> some View {
         // Blurred background + rest of fields
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 16) {
             Spacer()
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Overall: \(card.overall)/5")
-                Text("Ranking: #\(card.ranking)")
-                Text("Student Population: \(card.studentPopulation)")
+            VStack(alignment: .leading, spacing: 12) {
+                // Another star field
+                HStack {
+                    Text("🌟 Overall:")
+                        .font(.title3).bold()
+                    starRating(card.overall)
+                }
+                
+                // Plain text fields with emojis
+                Text("🏅 Ranking: #\(card.ranking)")
+                    .font(.title3).bold()
+                Text("🧑‍🎓 Student Population: \(card.studentPopulation)")
+                    .font(.title3).bold()
                 
                 // topMajors array
-                Text("Top Majors: \(card.topMajors.joined(separator: ", "))")
+                Text("📚 Top Majors: \(card.topMajors.joined(separator: ", "))")
+                    .font(.title3).bold()
                 
-                Text("Website: \(card.website)")
+                Text("🔗 Website: \(card.website)")
+                    .font(.title3).bold()
             }
-            .font(.headline)
             .foregroundColor(.white)
-            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
         }
         .padding(.bottom, 20)
     }
@@ -231,32 +257,14 @@ struct CardView: View {
     }
 }
 
-// MARK: - CardInfoView (Optional: We replaced it with custom overlays)
-struct CardInfoView_Previews: PreviewProvider {
-    static var previews: some View {
-        CardView(
-            card: Card(
-                id: "harvard",
-                name: "Harvard University",
-                year: 1636,
-                desc: "Ivy League in Cambridge, MA",
-                imageURL: "https://example.com/harvard.jpg",
-                athletics: 3,
-                diningRating: 4,
-                greekLife: 2,
-                institutionType: "Private",
-                location: "Cambridge, MA",
-                overall: 5,
-                ranking: 2,
-                studentPopulation: 21700,
-                topMajors: ["Economics", "CS", "Government", "Biology"],
-                website: "https://www.harvard.edu"
-            ),
-            forcedSwipe: .constant(nil),
-            onSwiped: {}
-        )
-        .frame(height: 600)
-        .padding()
+// MARK: - Star Rating helper
+private func starRating(_ rating: Int) -> some View {
+    HStack(spacing: 2) {
+        ForEach(0..<5, id: \.self) { index in
+            Image(systemName: index < rating ? "star.fill" : "star")
+                .font(.title3) // bigger star icons
+                .foregroundColor(.yellow)
+        }
     }
 }
 
