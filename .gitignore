@@ -28,7 +28,7 @@ Pods/
 Carthage/Build/
 
 # Firebase
-./GoogleService-Info.plist
+GoogleService-Info.plist
 
 # fastlane
 fastlane/report.xml
