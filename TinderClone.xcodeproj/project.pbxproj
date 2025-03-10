@@ -114,6 +114,7 @@
 				F1DE32FE24EE6F64008F6DF7 /* TinderClone */,
 				F1DE32FD24EE6F64008F6DF7 /* Products */,
 				CEEBF1552D7910DE005F2E23 /* GoogleService-Info.plist */,
+				CE577C662D7FAFEE005FFDC0 /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,7 +129,6 @@
 		F1DE32FE24EE6F64008F6DF7 /* TinderClone */ = {
 			isa = PBXGroup;
 			children = (
-				CE577C662D7FAFEE005FFDC0 /* .gitignore */,
 				CE1888292D7AAB7C002BF134 /* Other */,
 				F1DE32FF24EE6F64008F6DF7 /* TinderCloneApp.swift */,
 				F109F08724F3A4C600F1A4E1 /* Extension */,

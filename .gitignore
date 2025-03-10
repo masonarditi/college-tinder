@@ -1,34 +1,19 @@
-# Ignore bulk-firestore directory and its contents
-bulk-firestore/
-bulk-firestore/*
-bulk-firestore/**/*
-**/bulk-firestore/
-
-# Firebase configuration
-*/GoogleService-Info.plist
-
-# Private keys and sensitive data
-**/*.pem
-**/*.key
-**/*.p12
-**/*.json
-**/serviceAccount*.json
-**/credentials*.json
-
+### Swift ###
 # Xcode
-## User settings
+.DS_Store
 xcuserdata/
-*.xcuserstate
-
-## Obj-C/Swift specific
-*.hmap
-*.ipa
-*.dSYM.zip
-*.dSYM
-
-## Playgrounds
-timeline.xctimeline
-playground.xcworkspace
+*.xcscmblueprint
+*.xccheckout
+DerivedData/
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
 
 # Swift Package Manager
 .build/
@@ -42,6 +27,9 @@ Pods/
 # Carthage
 Carthage/Build/
 
+# Firebase
+./GoogleService-Info.plist
+
 # fastlane
 fastlane/report.xml
 fastlane/Preview.html
@@ -49,25 +37,9 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 
 # Code Injection
-iOSInjectionProject/
+injectionforxcode/
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-
-# Environment files
-.env
-.env.*
-*.env 
+# App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
