@@ -1,12 +1,5 @@
-# Tinder
-SwiftUI - Tinder
+i forked an opensource tinder-UI for swift to make a brainrot college selection app. i called it 
 
-  <img src="screenshots/img_1.png" height= "500"> 
+my first time coding in Swift
 
-  <img src="screenshots/img_2.png" height= "500"> 
-
-  <img src="screenshots/img_3.png" height= "500"> 
-
-  <img src="screenshots/img_4.png" height= "500"> 
-
-  <img src="screenshots/img_5.png" height= "500"> 
+demo here: https://x.com/createdbymason/status/1900721396952822208
